@@ -1,10 +1,11 @@
+// eslint-disable-next-line
 import _ from 'lodash';
 import './style.css';
 import Dots from './images/dots.png';
 import Enter from './images/enter.png';
 import Refresh from './images/refresh.png';
 
-//   // Lodash, now imported by this script
+// Lodash, now imported by this script
 const refreshContainer = document.querySelector('.refresh-container');
 const refresh = new Image();
 refresh.src = Refresh;
