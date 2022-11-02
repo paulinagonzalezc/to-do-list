@@ -3,15 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wbpack Exercise</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <title>To do List</title>
   </head>
   <body>
-    <h1>Hello webpack</h1>
-    <div>Today's To Do</div>
-    <div class="list-container"></div>
-    <div class="container">
-      <div class="element">Clean my room</div>
-      <div class="element">Clean my car</div>
+    <div class="list-wrapper">
+      <div class="complete-list">
+        <div class="title-container">
+          <p class="list-title">Today's To Do</p>
+          <div class="refresh-container"></div>
+        </div>
+        <div class="input-container">
+          <input
+            type="text"
+            id="list-item"
+            class="list-input"
+            placeholder="Add to your list..."
+          />
+          <div class="enter-container"></div>
+        </div>
+        <ul class="list-container"></ul>
+        <button class="clear-button">Clear all completed</button>
+      </div>
     </div>
   </body>
 </html>
