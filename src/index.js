@@ -2,6 +2,7 @@ import './style.css';
 import Dots from './images/dots.png';
 import Enter from './images/enter.png';
 import Refresh from './images/refresh.png';
+import Store from './StoreClass';
 import { update } from 'lodash';
 //import { functionsIn, update } from 'lodash';
 
@@ -31,46 +32,6 @@ class Task {
   }
 }
 // Store Class: Handles Storage
-class Store {
-  // Counter to keep track of task index
-  constructor() {
-    this.count = this.getList().length;
-  }
-
-  // Call to books from storage with get item
-  getList() {
-    if (localStorage.getItem('list') === null) {
-      this.list = [];
-    } else {
-      this.list = JSON.parse(localStorage.getItem('list'));
-    }
-    return this.list;
-  }
-
-  addTask(task) {
-    const newTask = {
-      id: this.count,
-      description: task.description,
-      completed: false,
-    };
-
-    const list = this.getList();
-    list.push(newTask);
-    localStorage.setItem('list', JSON.stringify(list));
-    this.count += 1;
-  }
-
-  resetIds() {
-    const currentList = this.getList();
-    let newList = [];
-    for (let i = 0; i < currentList.length; i++) {
-      let task = currentList[i];
-      task.id = i;
-      newList.push(task);
-    }
-    localStorage.setItem('list', JSON.stringify(newList));
-  }
-}
 
 // Creating new Store instance
 const store = new Store();
@@ -128,6 +89,7 @@ class UI {
   }
 }
 
+// Update Task
 function updateTask(e) {
   const text = e.target.value;
   const value = e.target.id;
@@ -143,6 +105,7 @@ function updateTask(e) {
   }
   localStorage.setItem('list', JSON.stringify(list));
 }
+
 // Event listener for UI when load
 document.addEventListener('DOMContentLoaded', UI.displayList);
 
