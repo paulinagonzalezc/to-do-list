@@ -18,17 +18,18 @@
           <p class="list-title">Today's To Do</p>
           <div class="refresh-container"></div>
         </div>
-        <div class="input-container">
+        <form class="input-container" id="new-todo-form">
           <input
+            name="description"
             type="text"
             id="list-item"
             class="list-input"
             placeholder="Add to your list..."
           />
           <div class="enter-container"></div>
-        </div>
-        <ul class="list-container"></ul>
-        <button class="clear-button">Clear all completed</button>
+        </form>
+        <ul class="list-container" id="list-container"></ul>
+        <button class="clear-button" id="btn-clear">Clear all completed</button>
       </div>
     </div>
   </body>

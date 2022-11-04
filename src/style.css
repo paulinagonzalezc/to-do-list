@@ -102,6 +102,21 @@ body {
   padding: 15px 10px 15px 15px;
 }
 
+.task-input {
+  font-family: 'Open Sans', 'Lucida Grande', tahoma, verdana, arial, sans-serif;
+  font-weight: 300;
+  border: none;
+  width: 300px;
+}
+
+.checked {
+  text-decoration: line-through;
+}
+
+.task-input:focus {
+  outline: none;
+}
+
 .dots-container {
   display: flex;
   justify-content: end;
