@@ -29,9 +29,9 @@ class Store {
 
   resetIds() {
     const currentList = this.getList();
-    let newList = [];
-    for (let i = 0; i < currentList.length; i++) {
-      let task = currentList[i];
+    const newList = [];
+    for (let i = 0; i < currentList.length; i += 1) {
+      const task = currentList[i];
       task.id = i;
       newList.push(task);
     }

@@ -1,10 +1,11 @@
+/* eslint-disable max-classes-per-file */
 import './style.css';
+// import { update } from 'lodash';
 import Dots from './images/dots.png';
 import Enter from './images/enter.png';
 import Refresh from './images/refresh.png';
-import Store from './StoreClass';
-import { update } from 'lodash';
-//import { functionsIn, update } from 'lodash';
+import Store from './StoreClass.js';
+// import { functionsIn, update } from 'lodash';
 
 // Get Image for refresh icon
 const refreshContainer = document.querySelector('.refresh-container');
@@ -19,7 +20,7 @@ enter.src = Enter;
 enterContainer.innerHTML = `<img src=${Enter} class="enter-icon" />`;
 
 // Get image for 3 dots
-const listContainer = document.querySelector('.list-container');
+// const listContainer = document.querySelector('.list-container');
 const dots = new Image();
 dots.src = Dots;
 
@@ -28,14 +29,32 @@ class Task {
   constructor(id, description, completed) {
     this.id = id;
     this.description = description;
-    this.completed = false;
+    this.completed = completed;
   }
 }
 // Store Class: Handles Storage
 
 // Creating new Store instance
 const store = new Store();
-let inputTasks = [];
+
+// Update Task
+function updateTask(e) {
+  const text = e.target.value;
+  const value = e.target.id;
+  const splitid = value.split('-');
+  const idstring = splitid[2];
+  const id = parseInt(idstring, 10);
+  const list = store.getList();
+  for (let i = 0; i < list.length; i += 1) {
+    const task = list[i];
+    if (task.id === id) {
+      list[i].description = text;
+    }
+  }
+  localStorage.setItem('list', JSON.stringify(list));
+}
+
+const inputTasks = [];
 // UI Class : Handles UI tasks
 class UI {
   // Static so I don't have to instantiate
@@ -75,7 +94,7 @@ class UI {
           const fullid = li.id;
 
           const idString = fullid.split('-')[1];
-          const id = parseInt(idString);
+          const id = parseInt(idString, 10);
           return task.id !== id;
         });
         localStorage.setItem('list', JSON.stringify(filteredList));
@@ -90,21 +109,6 @@ class UI {
 }
 
 // Update Task
-function updateTask(e) {
-  const text = e.target.value;
-  const value = e.target.id;
-  const splitid = value.split('-');
-  const idstring = splitid[2];
-  const id = parseInt(idstring);
-  const list = store.getList();
-  for (let i = 0; i < list.length; i++) {
-    const task = list[i];
-    if (task.id === id) {
-      list[i].description = text;
-    }
-  }
-  localStorage.setItem('list', JSON.stringify(list));
-}
 
 // Event listener for UI when load
 document.addEventListener('DOMContentLoaded', UI.displayList);
