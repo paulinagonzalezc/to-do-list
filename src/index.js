@@ -2,7 +2,8 @@ import './style.css';
 import Dots from './images/dots.png';
 import Enter from './images/enter.png';
 import Refresh from './images/refresh.png';
-// import { functionsIn, update } from 'lodash';
+import { update } from 'lodash';
+//import { functionsIn, update } from 'lodash';
 
 // Get Image for refresh icon
 const refreshContainer = document.querySelector('.refresh-container');
@@ -58,11 +59,22 @@ class Store {
     localStorage.setItem('list', JSON.stringify(list));
     this.count += 1;
   }
+
+  resetIds() {
+    const currentList = this.getList();
+    let newList = [];
+    for (let i = 0; i < currentList.length; i++) {
+      let task = currentList[i];
+      task.id = i;
+      newList.push(task);
+    }
+    localStorage.setItem('list', JSON.stringify(newList));
+  }
 }
 
 // Creating new Store instance
 const store = new Store();
-
+let inputTasks = [];
 // UI Class : Handles UI tasks
 class UI {
   // Static so I don't have to instantiate
@@ -78,10 +90,13 @@ class UI {
     const taskContent = document.createElement('li');
     taskContent.innerHTML = `
         <input type="checkbox" id="checkbox" class="checkbox" />
-        <div><input value="${task.description}" class="task-input"/></div>
+        <div><input value="${task.description}" class="task-input" id="task-input-${task.id}"/></div>
         <div class="dots-container"><img class="dots"src="${Dots}" /></div>
     `;
     tasksList.appendChild(taskContent);
+    const taskInput = taskContent.querySelector('.task-input');
+    taskInput.addEventListener('keyup', updateTask);
+    inputTasks.push(taskInput);
     taskContent.classList.add('element');
     taskContent.setAttribute('id', `task-${task.id}`);
   }
@@ -90,26 +105,22 @@ class UI {
     const liList = document.querySelectorAll('.element');
     liList.forEach((li) => {
       const checkbox = li.querySelector('.checkbox');
-      console.log(checkbox.checked);
       if (checkbox.checked) {
         li.remove();
         const list = localStorage.getItem('list');
         const parsedlist = JSON.parse(list);
-        console.log(typeof parsedlist, parsedlist);
         //
         const filteredList = parsedlist.filter((task) => {
           const fullid = li.id;
 
           const idString = fullid.split('-')[1];
           const id = parseInt(idString);
-          console.log(typeof id);
           return task.id !== id;
         });
-        console.log(filteredList);
         localStorage.setItem('list', JSON.stringify(filteredList));
+        store.resetIds();
       }
     });
-    console.log(liList);
   }
 
   static clearFields() {
@@ -117,6 +128,21 @@ class UI {
   }
 }
 
+function updateTask(e) {
+  const text = e.target.value;
+  const value = e.target.id;
+  const splitid = value.split('-');
+  const idstring = splitid[2];
+  const id = parseInt(idstring);
+  const list = store.getList();
+  for (let i = 0; i < list.length; i++) {
+    const task = list[i];
+    if (task.id === id) {
+      list[i].description = text;
+    }
+  }
+  localStorage.setItem('list', JSON.stringify(list));
+}
 // Event listener for UI when load
 document.addEventListener('DOMContentLoaded', UI.displayList);
 
@@ -141,5 +167,3 @@ document.querySelector('#new-todo-form').addEventListener('submit', (e) => {
 
   UI.clearFields();
 });
-
-// Event listener for removing a book
