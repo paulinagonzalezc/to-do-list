@@ -6,13 +6,13 @@
 
 ## Built With
 
-- HTML
 - JavaScript
+- HTML
 - CSS
 
 ## Live Demo
 
-Currently not available.
+[To-do List Site](https://paulinagonzalezc.github.io/to-do-list/dist/)
 
 ## Getting Started
 
