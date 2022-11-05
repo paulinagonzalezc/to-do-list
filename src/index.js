@@ -3,8 +3,10 @@ import './style.css';
 // import { update } from 'lodash';
 import Dots from './images/dots.png';
 import Enter from './images/enter.png';
+import Bin from './images/Bin.png';
 import Refresh from './images/refresh.png';
 import Store from './StoreClass.js';
+import { remove } from 'lodash';
 // import { functionsIn, update } from 'lodash';
 
 // Get Image for refresh icon
@@ -55,6 +57,7 @@ function updateTask(e) {
 }
 
 const inputTasks = [];
+const buttonsDots = [];
 // UI Class : Handles UI tasks
 class UI {
   // Static so I don't have to instantiate
@@ -68,10 +71,11 @@ class UI {
     const tasksList = document.getElementById('list-container');
 
     const taskContent = document.createElement('li');
+    taskContent.addEventListener('click', toggleLi);
     taskContent.innerHTML = `
         <input type="checkbox" id="checkbox" class="checkbox" />
         <div><input value="${task.description}" class="task-input" id="task-input-${task.id}"/></div>
-        <div class="dots-container"><img class="dots"src="${Dots}" /></div>
+        <div class="dots-container"><img type="task-btn" class="dots" src="${Dots}" id="btn-bin-${task.id}" /></div>
     `;
     tasksList.appendChild(taskContent);
     const taskInput = taskContent.querySelector('.task-input');
@@ -79,6 +83,9 @@ class UI {
     inputTasks.push(taskInput);
     taskContent.classList.add('element');
     taskContent.setAttribute('id', `task-${task.id}`);
+    const dotsContainer = taskContent.querySelector('.dots-container');
+    dotsContainer.addEventListener('click', checkTask);
+    buttonsDots.push(dotsContainer);
   }
 
   static deleteCompleted() {
@@ -106,6 +113,55 @@ class UI {
   static clearFields() {
     document.querySelector('#list-item').value = '';
   }
+}
+function toggleLi(e) {
+  let li = undefined;
+  const target = e.target;
+  const className = e.target.classList[0];
+  if (e.target.type === 'checkbox' || e.target.type === 'task-btn') {
+    return;
+  }
+  target.style.backgroundColor = 'yellow';
+  if (className === 'task-input') {
+    li = target.parentElement.parentElement;
+    li.style.backgroundColor = 'yellow';
+  }
+
+  if (!li) {
+    li = target;
+  }
+  const image = li.getElementsByTagName('img')[0];
+  image.setAttribute('src', Bin);
+  image.setAttribute('type', 'bin');
+  image.setAttribute('class', 'bin');
+}
+
+function checkTask(e) {
+  if (e.target.className === 'bin') {
+    const fullid = e.target.id;
+    const idString = fullid.split('-')[2];
+    const id = parseInt(idString, 10);
+    removeTask(id);
+  }
+}
+
+function removeTask(id) {
+  const currentList = store.getList();
+  console.log(currentList);
+  const filteredList = currentList.filter((task) => {
+    return task.id !== id;
+  });
+  console.log(filteredList);
+  localStorage.setItem('list', JSON.stringify(filteredList));
+  const tasks = getUItasks();
+  console.log(tasks);
+  tasks.forEach((task) => task.remove());
+  UI.displayList();
+}
+
+function getUItasks() {
+  const UiTasks = document.querySelectorAll('.element');
+  return UiTasks;
 }
 
 // Update Task

@@ -107,6 +107,7 @@ body {
   font-weight: 300;
   border: none;
   width: 300px;
+  background-color: inherit;
 }
 
 .checked {
@@ -126,7 +127,13 @@ body {
 .dots {
   height: 15px;
   width: 15px;
-  cursor: grab;
+  cursor: pointer;
+}
+
+.bin {
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
 }
 
 .clear-button {
