@@ -18,6 +18,7 @@ enterContainer.innerHTML = `<img src=${Enter} class="enter-icon" />`;
 
 const dots = new Image();
 dots.src = Dots;
+
 const store = new Store();
 
 function getUItasks() {
@@ -43,6 +44,7 @@ function updateTask(e) {
 
 const inputTasks = [];
 const buttonsDots = [];
+const checkboxes = [];
 
 function toggleLi(e) {
   let li;
@@ -81,7 +83,7 @@ class UI {
     const taskContent = document.createElement('li');
     taskContent.addEventListener('click', toggleLi);
     taskContent.innerHTML = `
-        <input type="checkbox" id="checkbox" class="checkbox" />
+        <input type="checkbox" id="checkbox" name="${task.id}" class="checkbox" />
         <div><input value="${task.description}" class="task-input" id="task-input-${task.id}"/></div>
         <div class="dots-container"><img type="task-btn" class="dots" src="${Dots}" id="btn-bin-${task.id}" /></div>
     `;
@@ -100,6 +102,16 @@ class UI {
         UI.removeTask(id);
       }
     });
+    // to do add event listener
+    // push input checkbox event listeners array
+    const checkbox = taskContent.querySelector('#checkbox');
+    checkbox.addEventListener('click', (e) => {
+      const currentList = store.getList();
+      const idString = e.target.name;
+      const checkboxId = parseInt(idString, 10);
+      Store.toggleDone(currentList, checkboxId, checkbox.checked, taskInput);
+    });
+    checkboxes.push(checkbox);
     buttonsDots.push(dotsContainer);
   }
 
@@ -111,13 +123,7 @@ class UI {
         li.remove();
         const list = localStorage.getItem('list');
         const parsedlist = JSON.parse(list);
-        const filteredList = parsedlist.filter((task) => {
-          const fullid = li.id;
-
-          const idString = fullid.split('-')[1];
-          const id = parseInt(idString, 10);
-          return task.id !== id;
-        });
+        const filteredList = parsedlist.filter((task) => task.completed !== true);
         localStorage.setItem('list', JSON.stringify(filteredList));
         store.resetIds();
       }
