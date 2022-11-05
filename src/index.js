@@ -1,39 +1,24 @@
 import './style.css';
-// import { update } from 'lodash';
 import Dots from './images/dots.png';
 import Enter from './images/enter.png';
 import Bin from './images/bin.png';
 import Refresh from './images/refresh.png';
 import Store from './StoreClass.js';
 import Task from './TaskClass.js';
-// import { remove } from 'lodash';
-// import { functionsIn, update } from 'lodash';
 
-// Get Image for refresh icon
 const refreshContainer = document.querySelector('.refresh-container');
 const refresh = new Image();
 refresh.src = Refresh;
 refreshContainer.innerHTML = `<img src=${Refresh} class="refresh-icon" />`;
 
-// Get image for enter icon
 const enterContainer = document.querySelector('.enter-container');
 const enter = new Image();
 enter.src = Enter;
 enterContainer.innerHTML = `<img src=${Enter} class="enter-icon" />`;
 
-// Get image for 3 dots
-// const listContainer = document.querySelector('.list-container');
 const dots = new Image();
 dots.src = Dots;
-
-// task Class: represents a task object
-
-// Store Class: Handles Storage
-
-// Creating new Store instance
 const store = new Store();
-
-// Update Task
 
 function getUItasks() {
   const UiTasks = document.querySelectorAll('.element');
@@ -126,7 +111,6 @@ class UI {
         li.remove();
         const list = localStorage.getItem('list');
         const parsedlist = JSON.parse(list);
-        //
         const filteredList = parsedlist.filter((task) => {
           const fullid = li.id;
 
@@ -156,15 +140,11 @@ class UI {
   }
 }
 
-// Update Task
-
-// Event listener for UI when load
 document.addEventListener('DOMContentLoaded', UI.displayList);
 
 const btnClear = document.querySelector('#btn-clear');
 btnClear.addEventListener('click', UI.deleteCompleted);
 
-// Event listener for submit
 document.querySelector('#new-todo-form').addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -172,10 +152,8 @@ document.querySelector('#new-todo-form').addEventListener('submit', (e) => {
   const description = document.querySelector('#list-item').value;
   const completed = false;
 
-  // New task instance when you submit
   const task = new Task(id, description, completed);
 
-  // Sending task object submision to UI and storage
   UI.addTodoList(task);
 
   store.addTask(task);
